@@ -1,23 +1,50 @@
-// NarayanasAlg.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// Johnson-TrottersAlg.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
-#include <algorithm>
 #include <vector>
 #include <boost/timer.hpp>
 
-
 int main()
 {
-    std::vector<size_t> v = { 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10 };
     boost::timer t;
     t.restart();
-    std::sort(v.begin(), v.end());
-    do
+
+    const int N = 15;
+
+    std::vector<int> cur;
+    std::vector<int> rev;
+    std::vector<int> dir;
+    cur.resize(N + 2);
+    rev.resize(N + 2);
+    dir.resize(N + 2);
+    for (int i = 1; i <= N; i++) 
     {
-        //copy(v.begin(), v.end(), std::ostream_iterator<size_t>(std::cout, " "));
+        cur[i] = i;
+        rev[i] = i;
+        dir[i] = -1;
+    }
+    cur[0] = N + 1;
+    cur[N + 1] = N + 1;
+    dir[0] = 0;
+
+    int m = 0;
+    int n = 0;
+    while (m != 1)
+    {
+        //for (int i = 1; i <= N; i++)
+            //std::cout << cur[i] << " ";
         //std::cout << std::endl;
-    } while (std::next_permutation(v.begin(), v.end()));
+        m = N;
+        
+        while ((cur[rev[m] + dir[m]] > m) && (m > 1))
+        {
+            dir[m] = -dir[m];
+            m = m - 1;
+        }
+        std::swap(cur[rev[m]], cur[rev[m] + dir[m]]);
+        std::swap(rev[cur[rev[m]]], rev[cur[rev[m] + dir[m]]]);
+    }
     double duration = t.elapsed();
 
     std::cout << std::endl << duration << std::endl;
