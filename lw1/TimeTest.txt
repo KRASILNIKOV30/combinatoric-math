@@ -1,9 +1,11 @@
-Режим Release
+Release
 
-С выводом:
-	N=10: 23 мин 38 c
+With output:
+	N=10: 23 min 38 s
 
-Без вывода:
-	N=10: 50.37 c
-	N=15: 210 суток
-	N=20: 1070845 лет
+Without output:
+	N=10: 50.37 s
+	N=15: 210 days
+	N=20: 1070845 years
+	N=50: 1,33 * 10^43 billion years
+	N=100: 4,1 * 10^136 billion years  
