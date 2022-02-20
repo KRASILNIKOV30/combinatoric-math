@@ -1,8 +1,0 @@
-Release
-
-Without output:
-	N=10: 0.031 s
-	N=15: 3 h 6 min
-	N=20: 1070845 years
-	N=50: 1,33 * 10^43 billion years
-	N=100: 4,1 * 10^136 billion years  
