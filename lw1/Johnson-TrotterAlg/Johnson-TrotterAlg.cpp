@@ -1,7 +1,38 @@
-
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <boost/timer.hpp>
+#include "Johnson-TrotterAlg.h"
+
+void TimeCount(double duration)
+{
+    long double d = duration;
+    for (int i = 11; i <= 15; i++)
+    {
+        d *= i;
+    }
+    d /= 3600;
+    std::cout << "N = 15: " << d << " hours" << std::endl;
+
+    for (int i = 16; i <= 20; i++)
+    {
+        d *= i;
+    }
+    d /= 24;
+    std::cout << "N = 20: " << d << " days" << std::endl;
+
+    for (int i = 21; i <= 50; i++)
+    {
+        d *= i;
+    }
+    d /= 365;
+    std::cout << "N = 50: " << d << " years" << std::endl;
+
+    for (int i = 51; i <= 100; i++)
+    {
+        d *= i;
+    }
+    std::cout << "N = 100: " << d << " years" << std::endl;
+}
 
 int main()
 {
@@ -16,7 +47,7 @@ int main()
     cur.resize(N + 2);
     rev.resize(N + 2);
     dir.resize(N + 2);
-    for (int i = 1; i <= N; i++) 
+    for (int i = 1; i <= N; i++)
     {
         cur[i] = i;
         rev[i] = i;
@@ -30,11 +61,11 @@ int main()
     int n = 0;
     while (m != 1)
     {
-        for (int i = 1; i <= N; i++)
+        /*for (int i = 1; i <= N; i++)
             std::cout << cur[i] << " ";
-        std::cout << std::endl;
+        std::cout << std::endl;*/
         m = N;
-        
+
         while ((cur[rev[m] + dir[m]] > m) && (m > 1))
         {
             dir[m] = -dir[m];
@@ -46,4 +77,5 @@ int main()
     double duration = t.elapsed();
 
     std::cout << std::endl << duration << std::endl;
+    TimeCount(duration);
 }

@@ -20,9 +20,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Text Include="..\TimeTest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\TimeTest.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
