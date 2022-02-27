@@ -1,11 +1,40 @@
-// NarayanasAlg.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <boost/timer.hpp>
 
+
+
+void TimeCount(double duration)
+{
+    long double d = duration;
+    for (int i = 11; i <= 15; i++)
+    {
+        d *= i;
+    }
+    d /= 3600;
+    std::cout << "N = 15: " << d << " hours" << std::endl;
+
+    for (int i = 16; i <= 20; i++)
+    {
+        d *= i;
+    }
+    d /= 24;
+    std::cout << "N = 20: " << d << " days" << std::endl;
+
+    for (int i = 21; i <= 50; i++)
+    {
+        d *= i;
+    }
+    d /= 365;
+    std::cout << "N = 50: " << d << " years" << std::endl;
+
+    for (int i = 51; i <= 100; i++)
+    {
+        d *= i;
+    }
+    std::cout << "N = 100: " << d << " years" << std::endl;
+}
 
 int main()
 {
@@ -20,16 +49,6 @@ int main()
     } while (std::next_permutation(v.begin(), v.end()));
     double duration = t.elapsed();
 
-    std::cout << std::endl << duration << std::endl;
+    std::cout << std::endl << duration << std::endl << std::endl;
+    TimeCount(duration);
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

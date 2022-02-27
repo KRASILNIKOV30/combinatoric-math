@@ -1,16 +1,44 @@
-// Johnson-TrottersAlg.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <vector>
 #include <boost/timer.hpp>
+
+void TimeCount(double duration)
+{
+    long double d = duration;
+    for (int i = 11; i <= 15; i++)
+    {
+        d *= i;
+    }
+    d /= 3600;
+    std::cout << "N = 15: " << d << " hours" << std::endl;
+
+    for (int i = 16; i <= 20; i++)
+    {
+        d *= i;
+    }
+    d /= 24;
+    std::cout << "N = 20: " << d << " days" << std::endl;
+
+    for (int i = 21; i <= 50; i++)
+    {
+        d *= i;
+    }
+    d /= 365;
+    std::cout << "N = 50: " << d << " years" << std::endl;
+
+    for (int i = 51; i <= 100; i++)
+    {
+        d *= i;
+    }
+    std::cout << "N = 100: " << d << " years" << std::endl;
+}
 
 int main()
 {
     boost::timer t;
     t.restart();
 
-    const int N = 15;
+    const int N = 10;
 
     std::vector<int> cur;
     std::vector<int> rev;
@@ -18,7 +46,7 @@ int main()
     cur.resize(N + 2);
     rev.resize(N + 2);
     dir.resize(N + 2);
-    for (int i = 1; i <= N; i++) 
+    for (int i = 1; i <= N; i++)
     {
         cur[i] = i;
         rev[i] = i;
@@ -32,11 +60,11 @@ int main()
     int n = 0;
     while (m != 1)
     {
-        //for (int i = 1; i <= N; i++)
-            //std::cout << cur[i] << " ";
-        //std::cout << std::endl;
+        /*for (int i = 1; i <= N; i++)
+            std::cout << cur[i] << " ";
+        std::cout << std::endl;*/
         m = N;
-        
+
         while ((cur[rev[m] + dir[m]] > m) && (m > 1))
         {
             dir[m] = -dir[m];
@@ -48,15 +76,5 @@ int main()
     double duration = t.elapsed();
 
     std::cout << std::endl << duration << std::endl;
+    TimeCount(duration);
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
