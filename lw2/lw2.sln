@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PartialPermutation", "Parti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Subsets", "Subsets\Subsets.vcxproj", "{8798CFFD-64C3-458D-A774-27DF0A33F350}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compositions", "Compositions\Compositions.vcxproj", "{1FDD17C1-3F4C-4FBC-863E-2388B345A162}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{8798CFFD-64C3-458D-A774-27DF0A33F350}.Release|x64.Build.0 = Release|x64
 		{8798CFFD-64C3-458D-A774-27DF0A33F350}.Release|x86.ActiveCfg = Release|Win32
 		{8798CFFD-64C3-458D-A774-27DF0A33F350}.Release|x86.Build.0 = Release|Win32
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Debug|x64.ActiveCfg = Debug|x64
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Debug|x64.Build.0 = Debug|x64
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Debug|x86.ActiveCfg = Debug|Win32
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Debug|x86.Build.0 = Debug|Win32
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Release|x64.ActiveCfg = Release|x64
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Release|x64.Build.0 = Release|x64
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Release|x86.ActiveCfg = Release|Win32
+		{1FDD17C1-3F4C-4FBC-863E-2388B345A162}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
