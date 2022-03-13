@@ -3,8 +3,8 @@
 #include <vector>
 #include <algorithm>
 
-const int N = 20;
-const int K = 5;
+const int N = 3;
+const int K = 2;
 
 void NextCombination(std::vector<int>& v)
 {

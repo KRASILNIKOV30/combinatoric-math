@@ -2,8 +2,8 @@
 #include <boost/timer.hpp>
 #include <vector>
 
-const int N = 5;
-const int K = 3;
+const int N = 3;
+const int K = 2;
 
 void NextCombination(std::vector<int>& v)
 {
