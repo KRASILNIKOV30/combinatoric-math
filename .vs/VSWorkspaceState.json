@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\lw2",
+    "\\lw2\\Compositions"
   ],
-  "SelectedNode": "\\lw2.sln",
+  "SelectedNode": "\\lw2\\Compositions\\Compositions.cpp",
   "PreviewInSolutionExplorer": false
 }

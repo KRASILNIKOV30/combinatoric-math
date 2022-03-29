@@ -2,60 +2,56 @@
 #include <vector>
 #include <algorithm>
 
-const int N = 3;
-const int K = 4;
+const int N = 10;
+const int K = 3;
 
 void WriteComposition(std::vector<int> separators)
 {
-    int sum = N;
-    std::ranges::sort(separators, std::greater<int>());
-    for (auto el : separators)
+    std::ranges::sort(separators);
+    std::cout << separators[0] << " ";
+    for (int i = 1; i < separators.size(); i++)
     {
-        std::cout << sum - el << " ";
-        sum = el;
+        std::cout << separators[i] - separators[i-1] - 1 << " ";
     }
-    std::cout << sum;
+    std::cout << N + K - 2 - separators[separators.size() - 1];
 }
 
-bool NextSeparators(std::vector<int> & separators)
+bool NextSeparators(std::vector<int> & v, const int n, const int k)
 {
-    int i = K - 2;
-    while (true)
+    if (v[0] == n - k + 1)
     {
-        if (separators[i] != N)
+        return false;
+    }
+    int i = k - 1;
+    while (true)    
+    {
+        int max = n - k + 1 + i;
+        if (v[i] < max)
         {
-            separators[i]++;
-            i++;
-            for (i; i <= K - 2; i++)
+            v[i]++;
+            while (i < k - 1)
             {
-                separators[i] = 0;
+                i++;
+                v[i] = v[i - 1] + 1;
             }
             return true;
         }
-        else if (i != 0)
-        {
-            i--;
-        }
-        else
-        {
-            return false;
-        }
-    };
+        i--;
+    }
+    
 }
 
 int main()
 {
-    std::vector<int> separators(K-1);
-    for (auto el : separators)
+    std::vector<int> separators(K - 1);
+    for (int i = 0; i < K - 1; i++)
     {
-        el = 0;
+        separators[i] = i ;
     }
 
     do
     {
-        std::ranges::copy(separators, std::ostream_iterator<int>(std::cout, " "));
-        std::cout << ": ";
         WriteComposition(separators);
         std::cout << std::endl;
-    } while (NextSeparators(separators));
+    } while (NextSeparators(separators, N + K - 2, K - 1));
 }
