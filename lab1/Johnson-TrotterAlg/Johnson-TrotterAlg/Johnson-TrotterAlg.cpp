@@ -3,6 +3,8 @@
 #define BOOST_TIMER_ENABLE_DEPRECATED
 #include <boost/timer.hpp>
 
+constexpr bool IS_OUTPUT_ENABLED = true;
+
 void TimeCount(double duration)
 {
     long double d = duration;
@@ -39,7 +41,7 @@ int main()
     boost::timer t;
     t.restart();
 
-    const int N = 10;
+    const int N = 5;
 
     std::vector<int> cur;
     std::vector<int> rev;
@@ -58,12 +60,18 @@ int main()
     dir[0] = 0;
 
     int m = 0;
-    int n = 0;
+
     while (m != 1)
     {
-        /*for (int i = 1; i <= N; i++)
-            std::cout << cur[i] << " ";
-        std::cout << std::endl;*/
+        if (IS_OUTPUT_ENABLED)
+        {
+            for (int i = 1; i <= N; i++)
+            {
+                std::cout << cur[i] << " ";
+            }
+            std::cout << std::endl;
+        }
+            
         m = N;
 
         while ((cur[rev[m] + dir[m]] > m) && (m > 1))
