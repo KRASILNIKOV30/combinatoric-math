@@ -28,7 +28,7 @@ TEST_CASE("Find min assignment for one element")
 	CHECK(GetMinAssigment({ {1} }, { {1} }) == std::vector{1});
 }
 
-SCENARIO("Find min assignment for one element")
+SCENARIO("Find min assignment for two element")
 {
 	GIVEN("Equal facilities and for both elements")
 	{
@@ -72,6 +72,25 @@ SCENARIO("Find min assignment for one element")
 			}
 		}
 	}
+}
+
+TEST_CASE("Linear test")
+{
+	Matrix facilities = {
+		{0, 1, 1, 1},
+		{1, 0, 1, 1},
+		{1, 1, 0, 1},
+		{1, 1, 1, 0},
+	};
+
+	Matrix locations = {
+		{0, 1, 3, 7},
+		{1, 0, 2, 6},
+		{3, 4, 0, 4},
+		{7, 6, 4, 0},
+	};
+
+	CHECK(GetMinAssigment(facilities, locations) == std::vector{ 1, 2, 3, 4 });
 }
 
 TEST_CASE("Find assignment for four elements")
