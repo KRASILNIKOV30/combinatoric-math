@@ -1,5 +1,27 @@
 #include "../../../external/catch2/catch.hpp"
 #include "../QAP/GetMinAssignment.h"
+#include <iostream>
+#define BOOST_TIMER_ENABLE_DEPRECATED
+#include <boost/timer.hpp>
+
+constexpr bool LOAD_TEST_ENABLED = true;
+
+class TimerFixture
+{
+public:
+	void StartTimer()
+	{
+		m_timer.restart();
+	}
+
+	double StopTimer()
+	{
+		return m_timer.elapsed();
+	}
+
+private:
+	boost::timer m_timer;
+};
 
 TEST_CASE("Find min assignment for one element")
 {
@@ -69,4 +91,42 @@ TEST_CASE("Find assignment for four elements")
 	};
 
 	CHECK(GetMinAssigment(facilities, locations) == std::vector{ 1, 3, 2, 4 });
+}
+
+TEST_CASE_METHOD(TimerFixture, "Find assignment for ten elements")
+{
+	if (!LOAD_TEST_ENABLED)
+	{
+		return;
+	}
+
+	Matrix facilities = {
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+	};
+
+	Matrix locations = {
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+		{0, 2, 3, 1, 5, 3, 8, 7, 6, 1},
+	};
+
+	StartTimer();
+	CHECK(GetMinAssigment(facilities, locations) == std::vector{ 7, 5, 3, 8, 2, 6, 1, 10, 4, 9 });
+	std::cout << StopTimer() << std::endl;
 }
