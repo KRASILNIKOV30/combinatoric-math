@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-const int N = 10;
+const int N = 40;
 const int K = 3;
 
 void WriteComposition(std::vector<int> separators)

@@ -3,7 +3,7 @@
 #define BOOST_TIMER_ENABLE_DEPRECATED
 #include <boost/timer.hpp>
 
-const int N = 20;
+const int N = 10;
 
 void WriteSubset(std::vector<int> set, std::vector<int> bin)
 {

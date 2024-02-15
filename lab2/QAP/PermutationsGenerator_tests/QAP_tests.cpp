@@ -1,27 +1,9 @@
 #include "../../../external/catch2/catch.hpp"
 #include "../QAP/GetMinAssignment.h"
 #include <iostream>
-#define BOOST_TIMER_ENABLE_DEPRECATED
-#include <boost/timer.hpp>
+#include "../../../external/core/core/Timer.h"
 
 constexpr bool LOAD_TEST_ENABLED = true;
-
-class TimerFixture
-{
-public:
-	void StartTimer()
-	{
-		m_timer.restart();
-	}
-
-	double StopTimer()
-	{
-		return m_timer.elapsed();
-	}
-
-private:
-	boost::timer m_timer;
-};
 
 TEST_CASE("Find min assignment for one element")
 {

@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="..\QAP\GetMinAssignment.h" />
     <ClInclude Include="..\QAP\PermutationsGenerator.h" />
+    <ClInclude Include="C:\Users\bkras\source\repos\combinatoric-math\external\core\core\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

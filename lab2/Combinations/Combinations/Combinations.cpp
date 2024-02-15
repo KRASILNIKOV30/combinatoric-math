@@ -3,8 +3,8 @@
 #include <boost/timer.hpp>
 #include <vector>
 
-const int N = 3;
-const int K = 2;
+const int N = 12;
+const int K = 4;
 
 void NextCombination(std::vector<int>& v)
 {
@@ -14,8 +14,8 @@ void NextCombination(std::vector<int>& v)
         int max = N - K + 1 + i;
         if (v[i] < max)
         {
-            v[i]++;
-            while (i < K - 1)
+            v[i]++; // инкрементируем первый элемент, который можно инкрементировать
+            while (i < K - 1) // все последующие элементы заполняем последовательностью
             {
                 i++;
                 v[i] = v[i - 1] + 1;
