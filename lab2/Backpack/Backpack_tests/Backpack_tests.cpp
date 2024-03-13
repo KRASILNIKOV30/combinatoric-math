@@ -78,7 +78,7 @@ TEST_CASE_METHOD(TimerFixture, "Load test")
 		return;
 	}
 
-	constexpr int ELEMENTS_NUMBER = 22;
+	constexpr int ELEMENTS_NUMBER = 25;
 
 	std::vector<int> weights(ELEMENTS_NUMBER);
 	std::vector<int> values(ELEMENTS_NUMBER);
