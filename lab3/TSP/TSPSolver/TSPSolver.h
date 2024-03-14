@@ -19,7 +19,7 @@ public:
     using MatrixPtr = std::unique_ptr<Matrix>;
 
     // на вход матрица рассто€ний и требуема€ верхн€€ граница
-    LittleSolver(Matrix const& m, int record = INF);
+    LittleSolver(Matrix const& m);
     ~LittleSolver();
 
     // основной метод
@@ -63,14 +63,14 @@ private:
     std::list<std::pair<size_t, size_t>>  findBestZeros(const MatrixD& matrix) const;
     // получение коэффициента дл€ элемента (r, c)
     // r - row; c - column
-    static double getCoefficient(const MatrixD& m, size_t r, size_t c);
+    static int getCoefficient(const MatrixD& m, size_t r, size_t c);
     // записать последний проверенный путь
     void logPath(const arclist& path);
 
     // исходна€ матрица рассто€ний
     MatrixPtr _sourceMatrix;
     // рекорд, он же длина лучшего пути, он же верхн€€ граница
-    std::atomic<int> _record;
+    std::atomic<int> _record = INF;
     // лучшее решение
     arclist _arcs;
     // итоговое решение
@@ -80,5 +80,5 @@ private:
     // дл€ доступа к промежуточным результатам из другого потока
     mutable std::mutex _mutex;
     // значение, принимаемое за бесконечность
-    double _infinity;
+    int _infinity;
 };

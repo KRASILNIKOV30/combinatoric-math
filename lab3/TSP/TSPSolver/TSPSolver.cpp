@@ -7,14 +7,10 @@ using std::pair;
 using std::mutex;
 using std::lock_guard;
 
-LittleSolver::LittleSolver(const Matrix& m, int record)
-    :_record(record), _infinity(0) {
-    _sourceMatrix = std::make_unique<MatrixD>(m);
-    // сумма всех элементов матрицы выступает в качестве бесконечности
-    for (size_t i = 0; i < m.size(); i++)
-        for (size_t j = i + 1; j < m.size(); j++)
-            _infinity += (m.item(i, j) + m.item(j, i));
-    // заполнение диагонали бесконечностями
+LittleSolver::LittleSolver(const Matrix& m)
+{
+    _sourceMatrix = std::make_unique<Matrix>(m);
+    _infinity = INF;
     for (size_t i = 0; i < _sourceMatrix->size(); i++)
         _sourceMatrix->item(i, i) = _infinity;
 }
@@ -22,10 +18,7 @@ LittleSolver::LittleSolver(const Matrix& m, int record)
 LittleSolver::~LittleSolver() {}
 
 void LittleSolver::solve() {
-    // решение
     handleMatrix(*_sourceMatrix, arclist(), 0);
-    // запись решения
-    // доюавление нулевой вершины как начальной
     _solution.push_back(0);
     // посик следующей вершины
     while (!_arcs.empty()) {
@@ -124,30 +117,33 @@ void LittleSolver::handleMatrix(const Matrix& m, const arclist& path, int bottom
         // снова копирование матрицы текущего шага
         newMatrix = matrix;
         // добавление бесконечности на место iter
-        newMatrix(edge.first, edge.second) = _infinity + 1;
+        newMatrix(edge.first, edge.second) = INF;
         // обработка множества, не сожержащего ребро edge
         handleMatrix(newMatrix, path, bottomLimit);
     }
 }
 
 int LittleSolver::cost(const arclist& arcs) const {
-    // инициализация нулем
-    int result(0);
+    int result = 0;
     for (auto& iter : arcs)
-        // суммирование элементов исходной матрицы, соответствующих ребрам
-        result += _sourceMatrix->item(iter.first, iter.second);
+    {
+        auto el = _sourceMatrix->item(iter.first, iter.second);
+        if (el == INF || iter.first == iter.second)
+        {
+            return INF;
+        }
+        result += el;
+    }
 
     return result;
 }
 
 void LittleSolver::candidateSolution(const arclist& arcs) {
     int curCost;
-    // сравнение рекорда со стоимостью текущего пути
-    if (_record < (curCost = cost(arcs))) {
+    if (_record <= (curCost = cost(arcs))) {
         return;
     }
     std::lock_guard<std::mutex> g(_mutex);
-    // копирование стоимости и пути
     _record = curCost;
     _arcs = arcs;
 }
@@ -225,10 +221,10 @@ list<pair<size_t, size_t>> LittleSolver::findBestZeros(const MatrixD& matrix) co
     // список координат нулевых элементов
     list<pair<size_t, size_t>> zeros;
     // список их коэффициентов
-    list<double> coeffList;
+    list<int> coeffList;
 
     // максимальный коэффициент
-    double maxCoeff = 0;
+    int maxCoeff = 0;
     // поиск нулевых элементов
     for (size_t i = 0; i < matrix.size(); ++i)
         for (size_t j = 0; j < matrix.size(); ++j)
@@ -260,9 +256,9 @@ list<pair<size_t, size_t>> LittleSolver::findBestZeros(const MatrixD& matrix) co
     return zeros;
 }
 
-double LittleSolver::getCoefficient(const MatrixD& m, size_t r, size_t c) {
+int LittleSolver::getCoefficient(const MatrixD& m, size_t r, size_t c) {
     int rmin, cmin;
-    rmin = cmin = DBL_MAX;
+    rmin = cmin = INF;
     // обход строки и столбца
     for (size_t i = 0; i < m.size(); ++i) {
         if (i != r)
@@ -270,7 +266,10 @@ double LittleSolver::getCoefficient(const MatrixD& m, size_t r, size_t c) {
         if (i != c)
             cmin = std::min(cmin, m(r, i));
     }
-
+    if (rmin > INF - cmin)
+    {
+        return INF;
+    }
     return rmin + cmin;
 }
 

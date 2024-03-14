@@ -94,19 +94,54 @@ TEST_CASE("Test4")
 TEST_CASE("Test5")
 {
 	Mat mat = {
-		{ INF, 5, 6, 9, 2, 5, 0 },
+		{ INF, 5, 6, INF, 2, 5, INF },
 		{ 9, INF, 9, 2, 4, 6, 6 },
 		{ 1, 9, INF, 4, 8, INF, 7 },
 		{ 1, 5, 3, INF, 3, 8, 5 },
-		{ 6, 5, 5, 6, INF, 2, 7 },
+		{ INF, 5, INF, 6, INF, 2, 7 },
 		{ 5, 3, 8, 7, 2, INF, 8 },
-		{ 8, 7, 7, 4, 2, 1, INF },
+		{ 8, INF, 7, 4, 2, 1, INF },
 	};
 	Matrix matrix(mat);
 	LittleSolver solver(matrix);
 	solver.solve();
 
-	CHECK(solver.getRecord() == GetMinCost(mat));
+	CHECK(std::ranges::equal(solver.getSolution(), GetEulerCycle(mat)));
+}
+
+TEST_CASE("Test6")
+{
+	Mat mat = {
+		{ INF, 5, INF, INF, INF },
+		{ INF, INF, 5, INF, INF },
+		{ INF, INF, INF, 5, INF },
+		{ INF, INF, INF, INF, 5 },
+		{ 5, INF, INF, INF, INF },
+	};
+	Matrix matrix(mat);
+	LittleSolver solver(matrix);
+	solver.solve();
+
+	CHECK(std::ranges::equal(solver.getSolution(), GetEulerCycle(mat)));
+}
+
+TEST_CASE("Test7")
+{
+	Mat mat = {
+		{ INF, 3, INF, INF, INF, INF, INF, INF},
+		{ INF, INF, 3, INF, 11, INF, INF, INF},
+		{ INF, INF, INF, 1, 42, INF, INF, INF},
+		{ 42, INF, INF, INF, 3, INF, INF, INF},
+		{ 7, INF, INF, INF, INF, 1, INF, 11},
+		{ INF, INF, INF, 42, INF, INF, 5, INF},
+		{ INF, INF, INF, INF, INF, INF, INF, 5 },
+		{ 1, INF, 7, INF, INF, 42, INF, INF},
+	};
+	Matrix matrix(mat);
+	LittleSolver solver(matrix);
+	solver.solve();
+
+	CHECK(std::ranges::equal(solver.getSolution(), GetEulerCycle(mat)));
 }
 
 TEST_CASE_METHOD(TimerFixture, "Test with timer")
