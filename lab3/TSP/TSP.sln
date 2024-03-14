@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TSPBruteForce", "TSPBruteFo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{425140C8-B630-45D2-9E4D-F890EC94E5FB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TSPSolver", "TSPSolver\TSPSolver.vcxproj", "{CEAE479C-612E-4D23-8927-B8D0838CDA1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{425140C8-B630-45D2-9E4D-F890EC94E5FB}.Release|x64.Build.0 = Release|x64
 		{425140C8-B630-45D2-9E4D-F890EC94E5FB}.Release|x86.ActiveCfg = Release|Win32
 		{425140C8-B630-45D2-9E4D-F890EC94E5FB}.Release|x86.Build.0 = Release|Win32
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Debug|x64.ActiveCfg = Debug|x64
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Debug|x64.Build.0 = Debug|x64
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Debug|x86.ActiveCfg = Debug|Win32
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Debug|x86.Build.0 = Debug|Win32
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Release|x64.ActiveCfg = Release|x64
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Release|x64.Build.0 = Release|x64
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Release|x86.ActiveCfg = Release|Win32
+		{CEAE479C-612E-4D23-8927-B8D0838CDA1F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
