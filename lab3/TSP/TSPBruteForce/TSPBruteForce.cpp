@@ -3,7 +3,7 @@
 #include "TSPBruteForce.h"
 #include <algorithm>
 
-int GetCost(Mat const& matrix, std::vector<int> cycle)
+int GetCost(Matrix const& matrix, std::vector<int> cycle)
 {
     int result = 0;
     for (auto it = cycle.begin(); it + 1 != cycle.end(); it++)
@@ -19,7 +19,7 @@ int GetCost(Mat const& matrix, std::vector<int> cycle)
     return result;
 }
 
-std::vector<int> GetEulerCycle(Mat const& matrix)
+std::vector<int> GetEulerCycle(Matrix const& matrix)
 {
     int minCost = INF;
     std::vector<int> result(matrix.size());
@@ -40,7 +40,7 @@ std::vector<int> GetEulerCycle(Mat const& matrix)
     return result;
 }
 
-int GetMinCost(Mat const& matrix)
+int GetMinCost(Matrix const& matrix)
 {
     int minCost = INF;
     std::vector<int> result(matrix.size());

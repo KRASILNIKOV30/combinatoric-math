@@ -2,8 +2,8 @@
 #include <vector>
 #include <limits>
 
-using Mat = std::vector<std::vector<int>>;
+using Matrix = std::vector<std::vector<int>>;
 constexpr int INF = std::numeric_limits<int>::max();
 
-std::vector<int> GetEulerCycle(Mat const& matrix);
-int GetMinCost(Mat const& matrix);
+std::vector<int> GetEulerCycle(Matrix const& matrix);
+int GetMinCost(Matrix const& matrix);

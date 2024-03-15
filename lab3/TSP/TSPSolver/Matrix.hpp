@@ -2,79 +2,80 @@
 
 #include <vector>
 #include <stdio.h>
+#include <numeric>
 #include "../TSPBruteForce/TSPBruteForce.h"
 
-class Matrix 
+class CMatrix 
 {
 public:
-    explicit Matrix(Mat matrix);
-    const int& item(size_t row, size_t column) const;
-    int& item(size_t row, size_t column);
+    explicit CMatrix(Matrix matrix);
+    const int& Item(size_t row, size_t column) const;
+    int& Item(size_t row, size_t column);
     const int& operator()(size_t row, size_t column) const;
     int& operator()(size_t row, size_t column);
-    size_t rowIndex(size_t row) const;
-    size_t columnIndex(size_t column) const;
-    size_t size() const;
-    void removeRowColumn(size_t row, size_t column);
-    Matrix(const Matrix&) = default;
-    Matrix& operator=(const Matrix&) = default;
+    size_t RowIndex(size_t row) const;
+    size_t ColumnIndex(size_t column) const;
+    size_t Size() const;
+    void RemoveRowColumn(size_t row, size_t column);
+    CMatrix(const CMatrix&) = default;
+    CMatrix& operator=(const CMatrix&) = default;
 
 private:
-    void initRowsColumns();
+    void InitRowsColumns();
 
 private:
-    std::vector<std::vector<int>> _items;
-    std::vector<size_t> _rows;
-    std::vector<size_t> _columns;
+    Matrix m_items;
+    std::vector<size_t> m_rows;
+    std::vector<size_t> m_columns;
 };
 
-inline Matrix::Matrix(Mat matrix)
-    : _items(matrix)
-    , _rows(matrix.size())
-    , _columns(matrix.size())
+inline CMatrix::CMatrix(Matrix matrix)
+    : m_items(matrix)
+    , m_rows(matrix.size())
+    , m_columns(matrix.size())
 {
-    initRowsColumns();
+    InitRowsColumns();
 }
 
-inline const int& Matrix::item(size_t row, size_t column) const {
-    return _items[row][column];
+inline const int& CMatrix::Item(size_t row, size_t column) const {
+    return m_items[row][column];
 }
 
-inline int& Matrix::item(size_t row, size_t column) {
-    return const_cast<int&>(static_cast<const Matrix&>(*this).item(row, column));
+inline int& CMatrix::Item(size_t row, size_t column) {
+    return const_cast<int&>(static_cast<const CMatrix&>(*this).Item(row, column));
 }
 
-inline const int& Matrix::operator()(size_t row, size_t column) const {
-    return item(row, column);
+inline const int& CMatrix::operator()(size_t row, size_t column) const {
+    return Item(row, column);
 }
 
-inline int& Matrix::operator()(size_t row, size_t column) {
-    return item(row, column);
+inline int& CMatrix::operator()(size_t row, size_t column) {
+    return Item(row, column);
 }
 
-inline size_t Matrix::rowIndex(size_t row) const {
-    return _rows[row];
+inline size_t CMatrix::RowIndex(size_t row) const {
+    return m_rows[row];
 }
 
-inline size_t Matrix::columnIndex(size_t column) const {
-    return _columns[column];
+inline size_t CMatrix::ColumnIndex(size_t column) const {
+    return m_columns[column];
 }
 
-inline void Matrix::removeRowColumn(size_t row, size_t column) {
-    _rows.erase(_rows.begin() + row);
-    _columns.erase(_columns.begin() + column);
-    _items.erase(_items.begin() + row);
-    for (size_t i = 0; i < _items.size(); i++)
+inline void CMatrix::RemoveRowColumn(size_t row, size_t column) {
+    m_rows.erase(m_rows.begin() + row);
+    m_columns.erase(m_columns.begin() + column);
+    m_items.erase(m_items.begin() + row);
+    for (size_t i = 0; i < m_items.size(); i++)
     {
-        _items[i].erase(_items[i].begin() + column);
+        m_items[i].erase(m_items[i].begin() + column);
     }
 }
 
-inline size_t Matrix::size() const {
-    return _items.size();
+inline size_t CMatrix::Size() const {
+    return m_items.size();
 }
 
-inline void Matrix::initRowsColumns() {
-    for (size_t i = 0; i < _rows.size(); i++)
-        _rows[i] = _columns[i] = i;
+inline void CMatrix::InitRowsColumns() {
+    std::iota(m_rows.begin(), m_rows.end(), 0);
+    std::iota(m_columns.begin(), m_columns.end(), 0);
 }

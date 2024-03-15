@@ -8,13 +8,12 @@ using std::pair;
 using std::mutex;
 using std::lock_guard;
 
-LittleSolver::LittleSolver(const Mat& m)
+LittleSolver::LittleSolver(const Matrix& m)
 {
-    m_sourceMatrix = std::make_unique<Matrix>(Matrix(m));
-    m_infinity = INF - 1;
-    for (size_t i = 0; i < m_sourceMatrix->size(); i++)
+    m_sourceMatrix = std::make_unique<CMatrix>(CMatrix(m));
+    for (size_t i = 0; i < m_sourceMatrix->Size(); i++)
     {
-        m_sourceMatrix->item(i, i) = INF - 1;
+        m_sourceMatrix->Item(i, i) = m_removed;
     }
 }
 
@@ -44,9 +43,9 @@ int LittleSolver::GetRecord() const {
     return m_record;
 }
 
-void LittleSolver::HandleMatrix(const Matrix& m, const Edges& path, int bottomLimit) 
+void LittleSolver::HandleMatrix(const CMatrix& m, const Edges& path, int bottomLimit) 
 {
-    auto size = m.size();
+    auto size = m.Size();
     if (size < 2)
     {
         throw std::logic_error("Matrix smaller than 2x2");
@@ -54,15 +53,16 @@ void LittleSolver::HandleMatrix(const Matrix& m, const Edges& path, int bottomLi
 
     if (size == 2) 
     {
-        int i = m.item(0, 0) >= m_infinity ? 1 : 0;
+        auto item = m.Item(0, 0);
+        int i = (item == m_removed || item == INF) ? 1 : 0;
         Edges result(path);
-        result.emplace_back(m.rowIndex(0), m.columnIndex(i));
-        result.emplace_back(m.rowIndex(1), m.columnIndex(1 - i));
+        result.emplace_back(m.RowIndex(0), m.ColumnIndex(i));
+        result.emplace_back(m.RowIndex(1), m.ColumnIndex(1 - i));
         CandidateSolution(result);
         return;
     }
 
-    Matrix matrix(m);
+    CMatrix matrix(m);
     bottomLimit += SubtractFromMatrix(matrix);
     if (bottomLimit > m_record)
     {
@@ -77,9 +77,9 @@ void LittleSolver::HandleMatrix(const Matrix& m, const Edges& path, int bottomLi
 
     auto edge = zeros.front();
     auto newMatrix(matrix);
-    newMatrix.removeRowColumn(edge.first, edge.second);
+    newMatrix.RemoveRowColumn(edge.first, edge.second);
     auto newPath(path);
-    newPath.emplace_back(matrix.rowIndex(edge.first), matrix.columnIndex(edge.second));
+    newPath.emplace_back(matrix.RowIndex(edge.first), matrix.ColumnIndex(edge.second));
     AddInfinity(newMatrix);
     HandleMatrix(newMatrix, newPath, bottomLimit);
 
@@ -93,7 +93,7 @@ int LittleSolver::Cost(const Edges& path) const
     int result = 0;
     for (auto& iter : path)
     {
-        auto el = m_sourceMatrix->item(iter.first, iter.second);
+        auto el = m_sourceMatrix->Item(iter.first, iter.second);
         if (el == INF || iter.first == iter.second)
         {
             return INF;
@@ -114,17 +114,17 @@ void LittleSolver::CandidateSolution(const Edges& arcs)
     m_edges = arcs;
 }
 
-void LittleSolver::AddInfinity(Matrix& m)
+void LittleSolver::AddInfinity(CMatrix& m)
 {
-    vector<bool> infRow(m.size(), false);
-    vector<bool> infColumn(m.size(), false);
+    vector<bool> infRow(m.Size(), false);
+    vector<bool> infColumn(m.Size(), false);
 
-    for (size_t i = 0; i < m.size(); i++)
+    for (size_t i = 0; i < m.Size(); i++)
     {
-        for (size_t j = 0; j < m.size(); j++)
+        for (size_t j = 0; j < m.Size(); j++)
         {
 
-            if (m.item(i, j) == m_infinity)
+            if (m.Item(i, j) == m_removed)
             {
                 infRow[i] = true;
                 infColumn[j] = true;
@@ -145,20 +145,20 @@ void LittleSolver::AddInfinity(Matrix& m)
     for (size_t j = 0; j < infColumn.size(); j++)
     {
         if (!infColumn[j]) {
-            m.item(notInf, j) = m_infinity;
+            m.Item(notInf, j) = m_removed;
             break;
         }
     }
 }
 
-int LittleSolver::SubtractFromMatrix(Matrix& m) const 
+int LittleSolver::SubtractFromMatrix(CMatrix& m) const 
 {
-    vector<int> minRow(m.size(), INF);
-    vector<int> minColumn(m.size(), INF);
+    vector<int> minRow(m.Size(), INF);
+    vector<int> minColumn(m.Size(), INF);
 
-    for (size_t i = 0; i < m.size(); ++i) 
+    for (size_t i = 0; i < m.Size(); ++i) 
     {
-        for (size_t j = 0; j < m.size(); ++j)
+        for (size_t j = 0; j < m.Size(); ++j)
         {
             if (m(i, j) < minRow[i])
             {
@@ -166,9 +166,9 @@ int LittleSolver::SubtractFromMatrix(Matrix& m) const
             }
         }
 
-        for (size_t j = 0; j < m.size(); ++j) 
+        for (size_t j = 0; j < m.Size(); ++j) 
         {
-            if (m(i, j) < m_infinity) 
+            if (m(i, j) != m_removed && m(i, j) != INF) 
             {
                 m(i, j) -= minRow[i];
             }
@@ -179,11 +179,11 @@ int LittleSolver::SubtractFromMatrix(Matrix& m) const
         }
     }
 
-    for (size_t j = 0; j < m.size(); ++j)
+    for (size_t j = 0; j < m.Size(); ++j)
     {
-        for (size_t i = 0; i < m.size(); ++i)
+        for (size_t i = 0; i < m.Size(); ++i)
         {
-            if (m(i, j) < m_infinity)
+            if (m(i, j) != m_removed && m(i, j) != INF)
             {
                 m(i, j) -= minColumn[j];
             }
@@ -194,15 +194,15 @@ int LittleSolver::SubtractFromMatrix(Matrix& m) const
         std::reduce(minRow.begin(), minRow.end(), 0));
 }
 
-list<pair<size_t, size_t>> LittleSolver::FindBestZeros(const Matrix& matrix) const
+list<pair<size_t, size_t>> LittleSolver::FindBestZeros(const CMatrix& matrix) const
 {
     list<pair<size_t, size_t>> zeros;
     list<int> coeffList;
 
     int maxCoeff = 0;
-    for (size_t i = 0; i < matrix.size(); ++i)
+    for (size_t i = 0; i < matrix.Size(); ++i)
     {
-        for (size_t j = 0; j < matrix.size(); ++j)
+        for (size_t j = 0; j < matrix.Size(); ++j)
         {
             if (!matrix(i, j))
             {
@@ -231,11 +231,11 @@ list<pair<size_t, size_t>> LittleSolver::FindBestZeros(const Matrix& matrix) con
     return zeros;
 }
 
-int LittleSolver::GetPenalty(const Matrix& m, size_t r, size_t c)
+int LittleSolver::GetPenalty(const CMatrix& m, size_t r, size_t c)
 {
     int rmin, cmin;
     rmin = cmin = INF;
-    for (size_t i = 0; i < m.size(); ++i) 
+    for (size_t i = 0; i < m.Size(); ++i) 
     {
         if (i != r)
         {

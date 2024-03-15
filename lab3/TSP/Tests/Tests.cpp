@@ -17,7 +17,7 @@ namespace
 
 TEST_CASE("Brute force test")
 {
-	Mat mat = {
+	Matrix mat = {
 		{INF, 1, 0, 1, 1},
 		{1, INF, 1, 1, 0},
 		{1, 1, INF, 0, 1},
@@ -30,7 +30,7 @@ TEST_CASE("Brute force test")
 
 TEST_CASE("Test1")
 {
-	Mat mat = {
+	Matrix mat = {
 		{INF, 1, 0, 1, 1},
 		{1, INF, 1, 1, 0},
 		{1, 1, INF, 0, 1},
@@ -44,7 +44,7 @@ TEST_CASE("Test1")
 
 TEST_CASE("Test2")
 {
-	Mat mat = {
+	Matrix mat = {
 		{2, 1},
 		{1, 3},
 	};
@@ -55,7 +55,7 @@ TEST_CASE("Test2")
 
 TEST_CASE("Test3")
 {
-	Mat matrix = {
+	Matrix matrix = {
 		{1, 2, 3, 4, 5},
 		{1, 2, 3, 4, 5},
 		{1, 2, 3, 4, 5},
@@ -70,7 +70,7 @@ TEST_CASE("Test3")
 
 TEST_CASE("Test4")
 {
-	Mat matrix = {
+	Matrix matrix = {
 		{4, 2, 5, 4, 8},
 		{1, 1, 10, 4, 0},
 		{1, 8, 3, 4, 0},
@@ -84,7 +84,7 @@ TEST_CASE("Test4")
 
 TEST_CASE("Test5")
 {
-	Mat matrix = {
+	Matrix matrix = {
 		{ INF, 5, 6, INF, 2, 5, INF },
 		{ 9, INF, 9, 2, 4, 6, 6 },
 		{ 1, 9, INF, 4, 8, INF, 7 },
@@ -100,7 +100,7 @@ TEST_CASE("Test5")
 
 TEST_CASE("Test6")
 {
-	Mat matrix = {
+	Matrix matrix = {
 		{ INF, 5, INF, INF, INF },
 		{ INF, INF, 5, INF, INF },
 		{ INF, INF, INF, 5, INF },
@@ -114,7 +114,7 @@ TEST_CASE("Test6")
 
 TEST_CASE("Test7")
 {
-	Mat matrix = {
+	Matrix matrix = {
 		{ INF, 3, INF, INF, INF, INF, INF, INF},
 		{ INF, INF, 3, INF, 11, INF, INF, INF},
 		{ INF, INF, INF, 1, 42, INF, INF, INF},
@@ -138,7 +138,7 @@ TEST_CASE_METHOD(TimerFixture, "Test with timer")
 		return;
 	}
 
-	Mat matrix = {
+	Matrix matrix = {
 		{ 8, 1, 7, 0, 3, 2, 2, 2, 4, 5, 5, 2, 8 },
 		{ 1, 8, 5, 7, 1, 7, 7, 3, 4, 0, 8, 3, 6 },
 		{ 7, 1, 2, 2, 8, 6, 8, 4, 6, 1, 8, 9, 1 },
@@ -153,6 +153,7 @@ TEST_CASE_METHOD(TimerFixture, "Test with timer")
 		{ 0, 7, 2, 2, 6, 7, 2, 2, 3, 7, 8, 4, 9 },
 		{ 9, 3, 2, 1, 9, 7, 0, 2, 1, 7, 3, 3, 8 },
 	};
+	
 	LittleSolver solver(matrix);
 
 	StartTimer();
@@ -165,7 +166,7 @@ TEST_CASE_METHOD(TimerFixture, "Test with timer")
 
 	CHECK(solver.GetRecord() == minCost);
 
-	std::cout << "Matrix 13x13:" << std::endl;
+	std::cout << "Matrix 12x12:" << std::endl;
 	std::cout << "Brute force time: " << bruteForceTime << std::endl;
 	std::cout << "Solver time: " << solverTime << std::endl;
 }

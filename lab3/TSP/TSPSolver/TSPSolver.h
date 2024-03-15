@@ -9,14 +9,14 @@
 
 #include "matrix.hpp"
 
-class Matrix;
+class CMatrix;
 
 class LittleSolver {
 public:
     using Edges = std::list<std::pair<size_t, size_t>>;
-    using MatrixPtr = std::unique_ptr<Matrix>;
+    using MatrixPtr = std::unique_ptr<CMatrix>;
 
-    LittleSolver(Mat const& m);
+    LittleSolver(Matrix const& m);
 
     std::list<size_t> Solve();
     int GetRecord() const;
@@ -25,17 +25,17 @@ public:
     LittleSolver& operator=(const LittleSolver&) = delete;
 
 private:
-    void HandleMatrix(const Matrix& m, const Edges& arcs, int bottomLimit);
+    void HandleMatrix(const CMatrix& m, const Edges& arcs, int bottomLimit);
     int Cost(const Edges& path) const;
     void CandidateSolution(const Edges& arcs);
-    void AddInfinity(Matrix& m);
-    int SubtractFromMatrix(Matrix& m) const;
-    std::list<std::pair<size_t, size_t>>  FindBestZeros(const Matrix& matrix) const;
-    static int GetPenalty(const Matrix& m, size_t r, size_t c);
+    void AddInfinity(CMatrix& m);
+    int SubtractFromMatrix(CMatrix& m) const;
+    std::list<std::pair<size_t, size_t>>  FindBestZeros(const CMatrix& matrix) const;
+    static int GetPenalty(const CMatrix& m, size_t r, size_t c);
 
     MatrixPtr m_sourceMatrix;
     std::atomic<int> m_record = INF;
     Edges m_edges;
     std::list<size_t> m_solution;
-    int m_infinity;
+    int m_removed = INF - 1;
 };
