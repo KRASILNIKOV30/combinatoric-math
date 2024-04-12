@@ -166,7 +166,7 @@ TEST_CASE_METHOD(TimerFixture, "Test with timer")
 
 	CHECK(solver.GetRecord() == minCost);
 
-	std::cout << "Matrix 12x12:" << std::endl;
+	std::cout << "Matrix 13x13:" << std::endl;
 	std::cout << "Brute force time: " << bruteForceTime << std::endl;
 	std::cout << "Solver time: " << solverTime << std::endl;
 }
