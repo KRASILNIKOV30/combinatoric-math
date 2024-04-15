@@ -23,6 +23,7 @@ public:
 	void SetContact();
 	Edges GetEdges();
 	bool WillDelete();
+	void DeleteEdges();
 	void DeleteLink(int vertex);
 	~Vertex();
 

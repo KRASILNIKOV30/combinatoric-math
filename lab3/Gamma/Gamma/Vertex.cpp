@@ -61,6 +61,19 @@ bool Vertex::WillDelete()
 	);
 }
 
+void Vertex::DeleteEdges()
+{
+	if (!m_contact)
+	{
+		return;
+	}
+
+	std::erase_if(m_edges, [](auto& item)
+		{
+			return item.second->IsContact();
+		});
+}
+
 void Vertex::DeleteLink(int vertex)
 {
 	m_edges.extract(vertex);

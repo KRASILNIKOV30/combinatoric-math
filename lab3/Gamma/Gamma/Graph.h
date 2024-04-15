@@ -14,6 +14,7 @@ public:
 	Graph(EdgesList const& edgesList);
 	Segment PopFirstCycle(Segment segment = {});
 	Vertexes GetVertexes() const;
+	std::vector<Segment> GetSegments();
 
 private:
 	void DeleteSegment(Segment const& segment);

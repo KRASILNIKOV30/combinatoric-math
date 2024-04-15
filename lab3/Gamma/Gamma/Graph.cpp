@@ -26,6 +26,11 @@ Vertexes Graph::GetVertexes() const
 	return m_vertexes;
 }
 
+std::vector<Segment> Graph::GetSegments()
+{
+	return std::vector<Segment>();
+}
+
 void Graph::DeleteSegment(Segment const& segment)
 {
 	for (auto& n : segment)
@@ -38,6 +43,11 @@ void Graph::DeleteSegment(Segment const& segment)
 		{
 			return item.second.WillDelete();
 		});
+
+	for (auto& [n, v] : m_vertexes)
+	{
+		v.DeleteEdges();
+	}
 }
 
 void Graph::BFS(Vertex* prev, Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path)

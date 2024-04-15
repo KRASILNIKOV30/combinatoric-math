@@ -23,12 +23,12 @@ SCENARIO("graph tests")
 			{12, 4},
 		});
 
-		THEN("can pop first cycle")
+		WHEN("pop first cycle")
 		{
 			auto cycle = graph.PopFirstCycle();
 			CHECK(std::ranges::equal(cycle, std::initializer_list{ 1, 2, 3, 4, 5, 6, 8 }));
 
-			AND_THEN("Segment was deleted from graph")
+			THEN("Segment was deleted from graph")
 			{
 				auto vertexes = graph.GetVertexes();
 				for (auto& [v, _] : vertexes)
@@ -50,15 +50,22 @@ SCENARIO("graph tests")
 					{
 						CHECK_FALSE(vertexes.at(v).IsContact());
 					}
-
-					CHECK(vertexes.at(4).GetEdges().size() == 3);
-					CHECK(vertexes.at(9).GetEdges().size() == 2);
-					CHECK(vertexes.at(6).GetEdges().size() == 2);
-					CHECK(vertexes.at(1).GetEdges().size() == 2);
-					CHECK(vertexes.at(7).GetEdges().size() == 2);
-					CHECK(vertexes.at(5).GetEdges().size() == 3);
 				} 
+				CHECK(vertexes.at(4).GetEdges().size() == 2);
+				CHECK(vertexes.at(9).GetEdges().size() == 2);
+				CHECK(vertexes.at(6).GetEdges().size() == 1);
+				CHECK(vertexes.at(1).GetEdges().size() == 1);
+				CHECK(vertexes.at(7).GetEdges().size() == 2);
+				CHECK(vertexes.at(5).GetEdges().size() == 1);
+				CHECK(vertexes.at(2).GetEdges().size() == 1);
+			}
+
+			AND_WHEN("get segments")
+			{
+				auto segments = graph.GetSegments();
+
 			}
 		}
+
 	}
 }
