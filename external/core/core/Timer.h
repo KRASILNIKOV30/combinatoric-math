@@ -1,20 +1,19 @@
 #pragma once
-#define BOOST_TIMER_ENABLE_DEPRECATED
-#include <boost/timer.hpp>
 
 class TimerFixture
 {
 public:
 	void StartTimer()
 	{
-		m_timer.restart();
+		m_start = m_timer.now();
 	}
 
-	double StopTimer()
+	std::chrono::microseconds StopTimer()
 	{
-		return m_timer.elapsed();
+		return std::chrono::duration_cast<std::chrono::microseconds>(m_timer.now() - m_start);
 	}
 
 private:
-	boost::timer m_timer;
+	std::chrono::high_resolution_clock m_timer;
+	std::chrono::steady_clock::time_point m_start;
 };

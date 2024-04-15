@@ -1,13 +1,35 @@
-#include <unordered_set>
+#pragma once
+#include <map>
+#include <Segment.h>
 
-struct Vertex
+class Vertex;
+
+using Edges = std::map<int, Vertex*>;
+
+class Vertex
 {
+public:
 	Vertex(int n)
-		: number(n)
+		: m_number(n)
 	{}
 
-	int number;
-	std::unordered_set<Vertex*> edges = {};
-	bool contact = false;
-	bool visited = false;
+	int GetNumber() const;
+	bool IsContact() const;
+	bool IsVisited() const;
+	void AddSibling(Vertex* v);
+	bool HasNext() const;
+	Vertex* Next();
+	void SetVisited();
+	void SetContact();
+	Edges GetEdges();
+	bool WillDelete();
+	void DeleteLink(int vertex);
+	~Vertex();
+
+private:
+	int m_number;
+	Edges m_edges = {};
+	bool m_contact = false;
+	bool m_visited = false;
+	int m_next = 0;
 };

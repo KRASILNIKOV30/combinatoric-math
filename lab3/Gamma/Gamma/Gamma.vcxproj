@@ -132,11 +132,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Face.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="PlanarGraph.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Face.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="PlanarGraph.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

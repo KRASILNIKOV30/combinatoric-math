@@ -1,7 +1,13 @@
 #include "Face.h"
 #include <stdexcept>
+#include <unordered_set>
 
 Face::Face(Segment&& segment)
+	: m_segment(segment)
+{
+}
+
+Face::Face(Segment const& segment)
 	: m_segment(segment)
 {
 }
@@ -29,18 +35,18 @@ Segment Face::GetVertexes() const
 
 Segment Face::GetSegment(Segment const& segment) const
 {
-	Segment face({});
+	Segment newSegment({});
 
 	EnumFace
 	(
 		std::ranges::find(m_segment, segment.front()),
 		std::ranges::find(m_segment, segment.back()),
-		[&](int n) { face.push_back(n); }
+		[&](int n) { newSegment.push_back(n); }
 	);
 
-	face.splice(face.end(), std::list(std::next(segment.begin()), std::prev(segment.end())));
+	newSegment.splice(newSegment.end(), std::list(std::next(segment.begin()), std::prev(segment.end())));
 
-	return face;
+	return newSegment;
 }
 
 void Face::EnumFace(Segment::const_iterator start, Segment::const_iterator end, std::function<void(int)> callback) const
@@ -65,3 +71,27 @@ void Face::EnumFace(Segment::const_iterator start, Segment::const_iterator end, 
 		}
 	}
 }
+
+bool Face::Contain(Segment const& segment) const
+{
+	bool firstContact = false;
+	bool secondContact = false;
+	for (auto& vertex : m_segment)
+	{
+		if (vertex == segment.front())
+		{
+			firstContact = true;
+		}
+		if (vertex == segment.back())
+		{
+			secondContact = true;
+		}
+		if (firstContact && secondContact)
+		{
+			return true;
+		}
+	}
+
+	return firstContact && secondContact;
+}
+

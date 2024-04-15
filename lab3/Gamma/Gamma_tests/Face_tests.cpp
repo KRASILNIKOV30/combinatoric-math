@@ -82,4 +82,20 @@ SCENARIO("face tests")
 			}
 		}
 	}
+
+	GIVEN("squared face")
+	{
+		Face face({ 1, 2, 3, 4 });
+
+		THEN("contain check")
+		{
+			CHECK(face.Contain({ 1, 3 }));
+			CHECK(face.Contain({ 4, 5, 6, 4 }));
+
+			CHECK_FALSE(face.Contain({ 4, 5, 6 }));
+			CHECK_FALSE(face.Contain({ 5, 6, 7 }));
+		}
+
+		
+	}
 }

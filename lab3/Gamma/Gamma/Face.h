@@ -6,7 +6,9 @@ class Face
 {
 public:
 	Face(Segment&& segment);
+	Face(Segment const& segment);
 	Face AddSegment(Segment const& segment);
+	bool Contain(Segment const& segment) const;
 	Segment GetVertexes() const;
 
 private:
