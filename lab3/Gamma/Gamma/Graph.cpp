@@ -9,8 +9,7 @@ Segment Graph::PopFirstCycle(Segment segment)
 {
 	Vertex* start = std::addressof(m_vertexes.begin()->second);
 	Segment cycle = { start->GetNumber() };
-	BFS(nullptr, start,
-		[&](Vertex* curr, Segment path)
+	BFS(start, [&](Vertex* curr, Segment path)
 		{
 			if (path.size() > 2 && curr->GetEdges().contains(start->GetNumber()))
 			{
@@ -26,11 +25,6 @@ Vertexes Graph::GetVertexes() const
 	return m_vertexes;
 }
 
-std::vector<Segment> Graph::GetSegments()
-{
-	return std::vector<Segment>();
-}
-
 void Graph::DeleteSegment(Segment const& segment)
 {
 	for (auto& n : segment)
@@ -44,13 +38,34 @@ void Graph::DeleteSegment(Segment const& segment)
 			return item.second.WillDelete();
 		});
 
-	for (auto& [n, v] : m_vertexes)
-	{
-		v.DeleteEdges();
-	}
+	EnumAll([](auto& v) { v.DeleteEdges(); });
 }
 
-void Graph::BFS(Vertex* prev, Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path)
+std::vector<Segment> Graph::GetSegments()
+{
+	std::vector<Segment> segments;
+	IterateContact([&](auto& it)
+		{
+			EnumAll([](auto& v) { v.SetVisited(false); });
+			Vertex* start = std::addressof(it->second);
+			BFS(start, [&](Vertex* curr, Segment path)
+				{
+					if (curr->IsContact())
+					{
+						segments.push_back(path);
+					}
+					else if (path.size() > 2 && curr->GetEdges().contains(start->GetNumber()))
+					{
+						path.push_back(start->GetNumber());
+						segments.push_back(path);
+					}
+				});
+		});
+
+	return segments;
+}
+
+void Graph::BFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path, Vertex* prev)
 {
 	path.push_back(curr->GetNumber());
 	curr->SetVisited();
@@ -65,9 +80,8 @@ void Graph::BFS(Vertex* prev, Vertex* curr, std::function<void(Vertex*, Segment)
 		{
 			continue;
 		}
-		BFS(curr, next, callback, path);
+		BFS(next, callback, path, curr);
 	}
-	
 }
 
 void Graph::BuildGraph(EdgesList const& edgesList)
@@ -78,5 +92,24 @@ void Graph::BuildGraph(EdgesList const& edgesList)
 		auto itSecond = m_vertexes.try_emplace(second, second).first;
 		itFirst->second.AddSibling(std::addressof(itSecond->second));
 		itSecond->second.AddSibling(std::addressof(itFirst->second));
+	}
+}
+
+void Graph::EnumAll(std::function<void(Vertex&)> callback)
+{
+	for (auto& [_, v] : m_vertexes)
+	{
+		callback(v);
+	}
+}
+
+void Graph::IterateContact(std::function<void(Vertexes::iterator&)> callback)
+{
+	for (auto it = m_vertexes.begin(); it != m_vertexes.end(); ++it)
+	{
+		if (it->second.IsContact())
+		{
+			callback(it);
+		}
 	}
 }

@@ -19,7 +19,7 @@ public:
 	void AddSibling(Vertex* v);
 	bool HasNext() const;
 	Vertex* Next();
-	void SetVisited();
+	void SetVisited(bool visited = true);
 	void SetContact();
 	Edges GetEdges();
 	bool WillDelete();

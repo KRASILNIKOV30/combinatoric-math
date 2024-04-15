@@ -63,7 +63,7 @@ SCENARIO("graph tests")
 			AND_WHEN("get segments")
 			{
 				auto segments = graph.GetSegments();
-
+				CHECK(segments.size() == 5);
 			}
 		}
 

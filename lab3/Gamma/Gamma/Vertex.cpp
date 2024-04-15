@@ -32,9 +32,14 @@ Vertex* Vertex::Next()
 	return std::next(m_edges.begin(), m_next++)->second;
 }
 
-void Vertex::SetVisited()
+void Vertex::SetVisited(bool visited)
 {
-	m_visited = true;
+	if (!visited)
+	{
+		m_next = 0;
+	}
+
+	m_visited = visited;
 }
 
 void Vertex::SetContact()
