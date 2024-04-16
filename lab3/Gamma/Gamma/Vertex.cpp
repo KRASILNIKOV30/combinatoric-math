@@ -52,31 +52,15 @@ Edges Vertex::GetEdges()
 	return m_edges;
 }
 
-bool Vertex::WillDelete()
+bool Vertex::WithoutLinks()
 {
-	if (!m_contact)
-	{
-		return false;
-	}
-
-	return std::ranges::all_of(m_edges, [](auto& item)
-		{
-			return item.second->IsContact();
-		}
-	);
+	return m_edges.empty();
 }
 
-void Vertex::DeleteEdges()
+void Vertex::DeleteEdge(int vertex)
 {
-	if (!m_contact)
-	{
-		return;
-	}
-
-	std::erase_if(m_edges, [](auto& item)
-		{
-			return item.second->IsContact();
-		});
+	m_edges.at(vertex)->DeleteLink(m_number);
+	DeleteLink(vertex);
 }
 
 void Vertex::DeleteLink(int vertex)
@@ -84,10 +68,3 @@ void Vertex::DeleteLink(int vertex)
 	m_edges.extract(vertex);
 }
 
-Vertex::~Vertex()
-{
-	for (auto& [n, v] : m_edges)
-	{
-		v->DeleteLink(m_number);
-	}
-}

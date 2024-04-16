@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Face.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="PlanarEmbedder.h" />
     <ClInclude Include="PlanarGraph.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Vertex.h" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="PlanarEmbedder.cpp" />
     <ClCompile Include="PlanarGraph.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>

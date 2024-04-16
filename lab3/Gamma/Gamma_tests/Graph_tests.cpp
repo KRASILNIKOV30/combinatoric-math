@@ -68,4 +68,40 @@ SCENARIO("graph tests")
 		}
 
 	}
+
+	GIVEN("K4 graph")
+	{
+		Graph graph({
+			{1, 2},
+			{2, 3},
+			{3, 4},
+			{4, 1},
+			{1, 3},
+			{2, 4},
+		});
+
+		WHEN("pop first cycle")
+		{
+			auto cycle = graph.PopFirstCycle();
+			CHECK(std::ranges::equal(cycle, std::initializer_list{ 1, 2, 3, 4 }));
+
+			THEN("nothing was deleted")
+			{
+				CHECK(graph.GetVertexes().size() == 4);
+			}
+
+			WHEN("get segments")
+			{
+				auto segments = graph.GetSegments();
+				
+				THEN("graph has two segments")
+				{
+					CHECK(segments.size() == 4);
+					CHECK(std::ranges::equal(segments[0], std::initializer_list{ 1, 3 }));
+					CHECK(std::ranges::equal(segments[1], std::initializer_list{ 2, 4 }));
+				}
+			}
+		}
+
+	}
 }

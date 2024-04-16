@@ -1,11 +1,12 @@
 #include "Graph.h"
+#include <stdexcept>
 
 Graph::Graph(EdgesList const& edgesList)
 {
 	BuildGraph(edgesList);
 }
 
-Segment Graph::PopFirstCycle(Segment segment)
+Segment Graph::PopFirstCycle()
 {
 	Vertex* start = std::addressof(m_vertexes.begin()->second);
 	Segment cycle = { start->GetNumber() };
@@ -16,7 +17,15 @@ Segment Graph::PopFirstCycle(Segment segment)
 				cycle = path;
 			}
 		});
-	DeleteSegment(cycle);
+
+	if (cycle.size() == 1)
+	{
+		throw std::runtime_error("Graph has no cycles");
+	}
+
+	auto cycleToDelete = cycle;
+	cycleToDelete.push_back(cycle.front());
+	DeleteSegment(cycleToDelete);
 	return cycle;
 }
 
@@ -33,12 +42,20 @@ void Graph::DeleteSegment(Segment const& segment)
 		it->second.SetContact();
 	}
 
-	std::erase_if(m_vertexes, [](auto& item)
+	EnumEdges(segment, [&](int begin, int end)
 		{
-			return item.second.WillDelete();
+			m_vertexes.at(begin).DeleteEdge(end);
 		});
 
-	EnumAll([](auto& v) { v.DeleteEdges(); });
+	std::erase_if(m_vertexes, [](auto& item)
+		{
+			return item.second.WithoutLinks();
+		});
+}
+
+bool Graph::IsEmpty() const
+{
+	return m_vertexes.empty();
 }
 
 std::vector<Segment> Graph::GetSegments()
@@ -111,5 +128,13 @@ void Graph::IterateContact(std::function<void(Vertexes::iterator&)> callback)
 		{
 			callback(it);
 		}
+	}
+}
+
+void Graph::EnumEdges(Segment const& segment, std::function<void(int begin, int end)> callback)
+{
+	for (auto first = segment.begin(), second = std::next(first); second != segment.end(); ++first, ++second)
+	{
+		callback(*first, *second);
 	}
 }
