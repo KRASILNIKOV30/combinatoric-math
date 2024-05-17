@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="XCode">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/external/SDL2_gfx/XCode.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
