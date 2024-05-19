@@ -18,17 +18,15 @@ addRows i j k mat = take i mat ++ [zipWith (+) (mat !! i) (map (* k) (mat !! j))
 
 -- Gaussian elimination
 
-eliminate :: Matrix -> (Matrix, Double, Int)
-eliminate mat = foldr eliminateRow (mat, 1.0, rank) [0..length mat-1]
+eliminate :: Matrix -> Double
+eliminate mat = snd $ foldl eliminateRow (mat, 1.0) [0..length mat-1]
   where
-    rank = length mat  -- Initialize rank as the number of rows
-
-    eliminateRow row (mat, detAccum, rank) = foldl eliminateEntry (mat, detAccum, rank) [0..length mat-1]
+    eliminateRow (mat, detAccum) row = foldr eliminateEntry (mat, detAccum) [0..length mat-1]
       where
-        eliminateEntry (mat, detAccum, rank) col
-          | row == col = (scaleRow row (1 / pivot) mat, detAccum * pivot, rank)
-          | mat !! col !! row /= 0 = (addRows col row (-ratio) mat, detAccum, rank)
-          | otherwise = (mat, detAccum, rank - 1)
+        eliminateEntry col (mat, detAccum)
+          | row == col = (scaleRow row (1 / pivot) mat, detAccum * pivot)
+          | mat !! col !! row /= 0 = (addRows col row (-ratio) mat, detAccum)
+          | otherwise = (mat, detAccum)
           where
             pivot = mat !! row !! row
             ratio = (mat !! col !! row) / pivot

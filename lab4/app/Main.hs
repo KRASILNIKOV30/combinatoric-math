@@ -12,13 +12,11 @@ main = do
   --let piece_dim = 600
   --let submat = subMatrix mat piece_dim
 
-  let (refMat, determinant, rank) = eliminate submat  -- Calculate the ref matrix, determinant, and rank
+  let determinant = eliminate submat  -- Calculate the ref matrix, determinant, and rank
   --putStrLn "Original Matrix:"
   --printMatrix submat
   putStrLn "\nDeterminant:"
   print determinant
-  putStrLn "\nRank:"
-  print rank
 
 --main = someFunc
 
