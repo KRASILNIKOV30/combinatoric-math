@@ -46,6 +46,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - lab4
+    - containers
 
 tests:
   lab4-test:
@@ -58,3 +59,4 @@ tests:
     dependencies:
     - lab4
     - HUnit
+    - containers

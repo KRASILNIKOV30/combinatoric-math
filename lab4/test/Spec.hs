@@ -1,5 +1,5 @@
 import Test.HUnit
-import DetElimination (eliminate)
+import SpanningTreeNumber (determinant, kirchhoffMatrix, spanningTreeNumber)
 
 approxN :: Int
 approxN = 7
@@ -12,9 +12,66 @@ assertApproxEqual :: String -> Double -> Double -> Assertion
 assertApproxEqual prefix x1 x2 =
   assertEqual prefix (approx x1) (approx x2)
 
+kirchhoffMatrixTest1 :: Test
+kirchhoffMatrixTest1 = TestCase $ assertEqual "kirchhoff matrix"
+    (kirchhoffMatrix [
+        [0, 1, 1],
+        [1, 0, 1],
+        [1, 1, 0]
+    ])
+    [
+        [2, -1, -1],
+        [-1, 2, -1],
+        [-1, -1, 2]
+    ]
+
+span1 :: Test
+span1 = TestCase $ assertEqual "tree"
+    (spanningTreeNumber [
+        [0, 1, 1, 0, 0],
+        [1, 0, 0, 1, 1],
+        [1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 1, 0, 0, 0]
+    ])
+    1
+
+span2 :: Test
+span2 = TestCase $ assertEqual "tree"
+    (kirchhoffMatrix [
+        [0, 1, 1, 0, 0],
+        [1, 0, 0, 1, 1],
+        [1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 1, 0, 0, 0]
+    ])
+    [
+        [2, -1, -1, 0, 0],
+        [-1,3, 0, -1,-1],
+        [-1, 0, 1, 0, 0],
+        [0, -1, 0, 1, 0],
+        [0, -1, 0, 0, 1]
+    ]
+
+span3 :: Test
+span3 = TestCase $ assertEqual "full graph"
+    (spanningTreeNumber [
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+    ])
+    100000000
+
 test1 :: Test
 test1 = TestCase $ assertApproxEqual "quadratic matrix"
-    (eliminate [
+    (determinant [
         [1, 2],
         [3, 4]
     ])
@@ -22,11 +79,11 @@ test1 = TestCase $ assertApproxEqual "quadratic matrix"
 
 test2 :: Test
 test2 = TestCase $ assertApproxEqual "simple matrix"
-    (eliminate [[0]]) 0
+    (determinant [[0]]) 0
 
 test3 :: Test
 test3 = TestCase $ assertApproxEqual "3x3 matrix"
-    (eliminate [
+    (determinant [
         [2, 3, 10],
         [100, 5.5, 0],
         [91, 7, 3.33]
@@ -35,7 +92,7 @@ test3 = TestCase $ assertApproxEqual "3x3 matrix"
 
 test4 :: Test
 test4 = TestCase $ assertApproxEqual "5x5 matrix"
-    (eliminate [
+    (determinant [
         [7, 1, 2, 4, 6],
         [5, 5, 3, 4, 7],
         [1, 3, 5, 4, 6],
@@ -46,7 +103,7 @@ test4 = TestCase $ assertApproxEqual "5x5 matrix"
 
 test5 :: Test
 test5 = TestCase $ assertApproxEqual "5x5 matrix"
-    (eliminate [
+    (determinant [
         [4, -4, -2, -4, 5],
         [3, 2, 0, 0, -1],
         [-4, -3, 2, 4, -3],
@@ -55,9 +112,19 @@ test5 = TestCase $ assertApproxEqual "5x5 matrix"
     ])
     3228
 
+test7 :: Test
+test7 = TestCase $ assertApproxEqual "5x5 matrix"
+    (determinant [
+        [2, -1, -1, 0],
+        [-1, 3, 0, -1],
+        [-1, 0, 1, 0],
+        [0, -1, 0, 1]
+    ])
+    1
+
 test6 :: Test
 test6 = TestCase $ assertApproxEqual "100x100 matrix"
-    (eliminate [
+    (determinant [
         [97,8,72,82,41,37,14,88,15,19,67,84,23,81,38,50,25,34,43,82,90,4,58,70,67,98,33,90,15,46,70,42,8,90,88,81,62,2,12,91,41,41,6,31,68,41,77,63,89,5,90,87,49,43,56,18,85,84,92,26,87,6,20,11,95,23,82,27,77,51,87,73,91,99,31,65,81,59,34,97,58,73,37,43,30,7,67,81,81,75,86,90,1,65,18,3,91,43,91,46],
         [60,55,51,17,12,27,2,69,69,89,15,21,56,4,68,10,48,2,43,50,50,85,69,92,34,35,33,25,26,29,77,96,34,84,12,39,76,83,13,76,36,51,93,79,24,97,1,62,1,71,56,61,89,27,0,28,15,26,67,81,23,93,75,65,98,89,55,11,20,27,25,66,86,76,87,49,12,53,14,15,50,9,26,30,63,89,65,10,83,0,23,74,68,75,89,14,98,72,70,62],
         [85,67,21,29,63,5,35,38,25,9,81,62,36,67,95,40,36,7,58,61,72,58,71,37,52,68,14,63,46,4,10,4,52,86,93,78,5,67,14,74,34,55,17,98,5,40,44,48,26,80,18,71,92,24,68,57,20,38,20,67,34,1,40,21,63,82,86,29,66,12,1,60,20,91,68,73,73,12,4,23,0,57,73,26,75,70,70,36,97,37,80,76,37,41,95,98,59,33,59,17],
@@ -162,4 +229,4 @@ test6 = TestCase $ assertApproxEqual "100x100 matrix"
     (-1.3232082006341687e225)
 
 main :: IO Counts
-main = runTestTT $ TestList [test1, test2, test3, test4, test5, test6]
+main = runTestTT $ TestList [test1, test2, test3, test4, test5, test6, kirchhoffMatrixTest1, span1, span2, span3, test7]
