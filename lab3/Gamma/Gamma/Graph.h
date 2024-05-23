@@ -19,7 +19,7 @@ public:
 	bool IsEmpty() const;
 
 private:
-	void BFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path = {}, Vertex* prev = nullptr);
+	void DFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path = {}, Vertex* prev = nullptr);
 	void BuildGraph(EdgesList const& edgesList);
 	void EnumAll(std::function<void(Vertex&)> callback);
 	void IterateContact(std::function<void(Vertexes::iterator&)> callback);

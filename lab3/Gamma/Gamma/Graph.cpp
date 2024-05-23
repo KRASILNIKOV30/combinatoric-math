@@ -10,7 +10,7 @@ Segment Graph::PopFirstCycle()
 {
 	Vertex* start = std::addressof(m_vertexes.begin()->second);
 	Segment cycle = { start->GetNumber() };
-	BFS(start, [&](Vertex* curr, Segment path)
+	DFS(start, [&](Vertex* curr, Segment path)
 		{
 			if (path.size() > 2 && curr->GetEdges().contains(start->GetNumber()))
 			{
@@ -65,7 +65,7 @@ std::vector<Segment> Graph::GetSegments()
 		{
 			EnumAll([](auto& v) { v.SetVisited(false); });
 			Vertex* start = std::addressof(it->second);
-			BFS(start, [&](Vertex* curr, Segment path)
+			DFS(start, [&](Vertex* curr, Segment path)
 				{
 					if (curr->IsContact())
 					{
@@ -82,7 +82,7 @@ std::vector<Segment> Graph::GetSegments()
 	return segments;
 }
 
-void Graph::BFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path, Vertex* prev)
+void Graph::DFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Segment path, Vertex* prev)
 {
 	path.push_back(curr->GetNumber());
 	curr->SetVisited();
@@ -97,7 +97,7 @@ void Graph::BFS(Vertex* curr, std::function<void(Vertex*, Segment)> callback, Se
 		{
 			continue;
 		}
-		BFS(next, callback, path, curr);
+		DFS(next, callback, path, curr);
 	}
 }
 
