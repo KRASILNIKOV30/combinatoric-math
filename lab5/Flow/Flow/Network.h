@@ -28,6 +28,7 @@ private:
 	std::vector<int> GetOutputs(int vertex);
 	void PushMaxLevelVertex();
 	void RelabelMaxLevelVertex();
+	int GetResidualCapacity(int u, int v);
 
 private:
 	Matrix m_constraints;

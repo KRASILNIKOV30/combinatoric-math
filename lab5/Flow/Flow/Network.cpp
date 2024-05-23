@@ -34,9 +34,14 @@ std::vector<int> Network::GetLevels() const
 	return m_level;
 }
 
+int Network::GetResidualCapacity(int u, int v)
+{
+	return std::min(GetOverflow(u), m_constraints[u][v] - m_flow[u][v]);
+}
+
 void Network::Push(int u, int v)
 {
-	const int diff = std::min(GetOverflow(u), m_constraints[u][v] - m_flow[u][v]);
+	const int diff = GetResidualCapacity(u, v);
 	m_flow[u][v] += diff;
 	m_flow[v][u] = -m_flow[u][v];
 }
@@ -83,7 +88,7 @@ int Network::GetMaxFlow()
 		RelabelMaxLevelVertex();
 	}
 
-	return GetOverflow(m_constraints.size() - 1);
+	return static_cast<int>(GetOverflow(m_constraints.size() - 1));
 }
 
 void Network::PushMaxLevelVertex()
@@ -159,7 +164,7 @@ std::vector<int> Network::GetOutputs(int vertex)
 {
 	std::vector<int> outputs;
 	ForEachOutput(vertex, [&](int v, int c, int f) { 
-		if (std::min(GetOverflow(vertex), m_constraints[vertex][v] - m_flow[vertex][v]))
+		if (GetResidualCapacity(vertex, v))
 		{
 			outputs.push_back(v);
 		}
